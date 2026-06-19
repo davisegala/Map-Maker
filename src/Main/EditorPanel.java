@@ -50,34 +50,7 @@ public final class EditorPanel extends JPanel {
     
     private void init() {
         this.setLayout(new BorderLayout());
-        
-        JPanel mapGrid = new JPanel(new java.awt.GridLayout(maxScreenRow, maxScreenCol));
-        mapGrid.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        mapGrid.setBackground(Color.gray);
-        mapGrid.setDoubleBuffered(true);
-        mapGrid.setFocusable(true);
-        
-        
-
-        int totalTiles = maxScreenRow * maxScreenCol;
-        for (int i = 0; i < totalTiles; i++) {
-            JPanel cell = new JPanel();
-            cell.setBackground(Color.GRAY);
-            cell.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            
-            cell.addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mousePressed(java.awt.event.MouseEvent e) {
-                        if (selectedTile != null) {
-                            cell.removeAll();
-                            cell.add(new JLabel(selectedTile.getModel()));
-                            cell.revalidate();
-                            cell.repaint();
-                        }
-                    }
-                });
-            mapGrid.add(cell);
-        }
+        initGrid();
 
         templateMenu.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         templateMenu.setBackground(Color.white);
@@ -85,8 +58,6 @@ public final class EditorPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(templateMenu);
 
         scrollPane.setPreferredSize(new Dimension(150, screenHeight)); 
-        
-        this.add(mapGrid, BorderLayout.CENTER);
         this.add(scrollPane, BorderLayout.EAST);
     }
     
@@ -111,6 +82,44 @@ public final class EditorPanel extends JPanel {
         templateMenu.add(panel);
         templateMenu.revalidate();
         templateMenu.repaint();
+    }
+    
+    private void initGrid() {
+        JPanel mapGrid = new JPanel(new java.awt.GridLayout(16, 16));
+        mapGrid.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        mapGrid.setBackground(Color.gray);
+        mapGrid.setDoubleBuffered(true);
+        mapGrid.setFocusable(true);
+        
+        int totalTiles = 16 * 16;
+        
+        for (int i = 0; i < totalTiles; i++) {
+            JPanel cell = new JPanel();
+            cell.setBackground(Color.GRAY);
+            cell.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            
+            cell.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent e) {
+                    if (selectedTile != null) {
+                        cell.removeAll();                        
+                        JLabel tileLabel = new JLabel(selectedTile.getModel());
+                        tileLabel.setHorizontalAlignment(SwingConstants.CENTER); 
+                        tileLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+                        cell.setLayout(new BorderLayout());
+                        cell.add(tileLabel, BorderLayout.CENTER);
+                        cell.setBorder(null);
+
+                        cell.revalidate();
+                        cell.repaint();
+                    }
+                }
+            });
+            
+            mapGrid.add(cell);
+            this.add(mapGrid, BorderLayout.CENTER);
+        }
     }
 
     public int getScreenWidth() {
