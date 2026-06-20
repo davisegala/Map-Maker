@@ -22,7 +22,7 @@ public final class EditorPanel extends JPanel {
     
     private final int tileSize = originalTileSize * scale;
     private final int maxScreenCol = 16;
-    private final int maxScreenRow = 12;
+    private final int maxScreenRow = 16;
     private final int screenWidth = tileSize * maxScreenCol;
     private final int screenHeight = tileSize * maxScreenRow;
 
@@ -62,7 +62,7 @@ public final class EditorPanel extends JPanel {
     }
     
     public void addTileTemplate(Tile tile) {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel(tile.getModel(), SwingConstants.LEADING));
         
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -92,19 +92,20 @@ public final class EditorPanel extends JPanel {
         mapGrid.setFocusable(true);
         
         int totalTiles = 16 * 16;
-        
+
         for (int i = 0; i < totalTiles; i++) {
-            JPanel cell = new JPanel();
+            JPanel cell = new JPanel(new BorderLayout());
             cell.setBackground(Color.GRAY);
             cell.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            
+
             cell.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent e) {
                     if (selectedTile != null) {
-                        cell.removeAll();                        
+                        cell.removeAll();
+
                         JLabel tileLabel = new JLabel(selectedTile.getModel());
-                        tileLabel.setHorizontalAlignment(SwingConstants.CENTER); 
+                        tileLabel.setHorizontalAlignment(SwingConstants.CENTER);
                         tileLabel.setVerticalAlignment(SwingConstants.CENTER);
 
                         cell.setLayout(new BorderLayout());
