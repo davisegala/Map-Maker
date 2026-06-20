@@ -1,18 +1,13 @@
 package Main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 public final class EditorPanel extends JPanel { 
     private final JPanel templateMenu = new JPanel();
-    
+
     private JPanel selectedJPanel = null;
     private Tile selectedTile = null;
     
@@ -22,7 +17,7 @@ public final class EditorPanel extends JPanel {
     
     private final int tileSize = originalTileSize * scale;
     private final int maxScreenCol = 16;
-    private final int maxScreenRow = 16;
+    private final int maxScreenRow = 12;
     private final int screenWidth = tileSize * maxScreenCol;
     private final int screenHeight = tileSize * maxScreenRow;
 
@@ -59,6 +54,16 @@ public final class EditorPanel extends JPanel {
 
         scrollPane.setPreferredSize(new Dimension(150, screenHeight)); 
         this.add(scrollPane, BorderLayout.EAST);
+
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), "openMenu");
+
+        this.getActionMap().put("openMenu", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ConfigTileTemplate().openMenu();
+            }
+        });
     }
     
     public void addTileTemplate(Tile tile) {
@@ -85,8 +90,11 @@ public final class EditorPanel extends JPanel {
     }
     
     private void initGrid() {
+        ScrollPane sp = new ScrollPane();
+        sp.setPreferredSize(new Dimension(screenWidth, screenHeight));
+
         JPanel mapGrid = new JPanel(new java.awt.GridLayout(16, 16));
-        mapGrid.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        mapGrid.setPreferredSize(new Dimension(screenWidth, screenWidth));
         mapGrid.setBackground(Color.gray);
         mapGrid.setDoubleBuffered(true);
         mapGrid.setFocusable(true);
@@ -119,7 +127,8 @@ public final class EditorPanel extends JPanel {
             });
             
             mapGrid.add(cell);
-            this.add(mapGrid, BorderLayout.CENTER);
+            sp.add(mapGrid, BorderLayout.CENTER);
+            this.add(sp);
         }
     }
 
@@ -133,13 +142,5 @@ public final class EditorPanel extends JPanel {
 
     public int getTileSize() {
         return tileSize;
-    }
-
-    public int getMaxScreenCol() {
-        return maxScreenCol;
-    }
-
-    public int getMaxScreenRow() {
-        return maxScreenRow;
     }
 }
