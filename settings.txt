@@ -1,0 +1,15 @@
+EMPTY_ID=-1
+MAP_COLS=16
+MAP_ROWS=16
+/res/Tiles/grass.png
+/res/Tiles/tree_1.png
+/res/Tiles/tree_2.png
+/res/Tiles/brick.png
+/res/Tiles/water.png
+/res/Tiles/flowers.png
+/res/Tiles/water_border_0.png
+/res/Tiles/water_border_1.png
+/res/Tiles/water_border_2.png
+/res/Tiles/water_border_3.png
+/res/Tiles/water_border_4.png
+/res/Tiles/water_border_5.png
